@@ -54,8 +54,8 @@ jobs:
           write-host "Select: $($selected -join ', ')"
           "list = $($selected -join ',')" | Out-File $env:GITHUB_OUTPUT -Append
   
-      - name: Install Power Platform CLI
-        uses: microsoft/powerplatform-actions@v1.9.2
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
 
             
       - name: Auth
