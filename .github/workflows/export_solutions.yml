@@ -23,7 +23,6 @@ jobs:
 
     permissions: 
       contents: write
-      pullrequests: create
 
     steps:
       - name: Checkout source branch
