@@ -56,6 +56,8 @@ jobs:
   
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
+        with:
+          add-tools-to-path: true
 
       - name: Check PAC
         shell: pwsh
