@@ -99,13 +99,13 @@ jobs:
       - name: Write manifest
         shell: pwsh
         run: |
-          $solutions = '${{ steps.select.output.list }}'.Split(',')
+          $solutions = '${{ steps.select.outputs.list }}'.Split(',')
           @{
             solution = $solutions
             source_branch = '${{ github.ref_name }}'
             run_number = '${{ github.run_number }}'
-            exported_by = '${{ github.anchor }}'
-            exported_utc = (Get-Date).ToUniversatTime().ToString('o')
+            exported_by = '${{ github.actor }}'
+            exported_utc = (Get-Date).ToUniversalTime().ToString('o')
           } | ConvertTo-Json -Depth 3 | Out-File artifact/manifest.json -Encoding utf8
   
           Get-Content artifact/manifest.json
