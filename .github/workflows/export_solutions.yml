@@ -88,44 +88,44 @@ jobs:
               Copy-Item "out/$s.zip" "artifact/unmanged/$s.zip"
   
               write-host "$s exported"
-          }catch{
-            write-warning "$s FAILED - $_"
-            $failed += $s
+              }catch{
+                write-warning "$s FAILED - $_"
+                $failed += $s
+              }
+              write-host "End"
+            }
+
+      - name: Write manifest
+        shell: pwsh
+        run: |
+          $solutions = '${{ steps.select.output.list }}'.Split(',')
+          @{
+            solution = $solutions
+            source_branch = '${{ github.ref_name }}'
+            run_number = '${{ github.run_number }}'
+            exported_by = '${{ github.anchor }}'
+            exported_utc = (Get-Date).ToUniversatTime().ToString('o')
+          } | ConvertTo-Json -Depth 3 | Out-File artifact/manifest.json -Encoding utf8
+  
+          Get-Content artifact/manifest.json
+
+      - name: Push unpacked source to feature
+        shell: pwsh
+        run: |
+          $branch = "feat/solution_${{github.run_number}}"
+          git config user.name 'github-action[bot]'
+          git config user.email '${{vars.EMAIL}}'
+  
+          git checkout -b $branch
+          git add solution
+  
+          if(git diff --cached --quiet){
+            write-host "No Solution"
+          }else{
+            git commit -m "Adding unpack solutions"
+            git push origin $branch
+            write-host "Pushed to $branch"
           }
-          write-host "End"
-        }
-
-    - name: Write manifest
-      shell: pwsh
-      run: |
-        $solutions = '${{ steps.select.output.list }}'.Split(',')
-        @{
-          solution = $solutions
-          source_branch = '${{ github.ref_name }}'
-          run_number = '${{ github.run_number }}'
-          exported_by = '${{ github.anchor }}'
-          exported_utc = (Get-Date).ToUniversatTime().ToString('o')
-        } | ConvertTo-Json -Depth 3 | Out-File artifact/manifest.json -Encoding utf8
-
-        Get-Content artifact/manifest.json
-
-    - name: Push unpacked source to feature
-      shell: pwsh
-      run: |
-        $branch = "feat/solution_${{github.run_number}}"
-        git config user.name 'github-action[bot]'
-        git config user.email '${{vars.EMAIL}}'
-
-        git checkout -b $branch
-        git add solution
-
-        if(git diff --cached --quiet){
-          write-host "No Solution"
-        }else{
-          git commit -m "Adding unpack solutions"
-          git push origin $branch
-          write-host "Pushed to $branch"
-        }
         
 
 
