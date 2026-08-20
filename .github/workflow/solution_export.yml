@@ -61,7 +61,7 @@ jobs:
     - name: Auth
       shell: pwsh
       run: |
-        pac auth create --environment ${{}} --applicationId ${{}} --clientSecret ${{}} --tenant ${{}}
+        pac auth create --environment ${{vars.ENV_URL}} --applicationId ${{vars.CLIENT_ID}} --clientSecret ${{secrets.CLIENT_SECRETS}} --tenant ${{vars.TENANT_ID}}
 
     - name: Export Pack Unpack
       shell: pwsh
@@ -112,7 +112,7 @@ jobs:
       run: |
         $branch = "feat/solution_${{github.run_number}}"
         git config user.name 'github-action[bot]'
-        git config user.email '${{vars.Email}}'
+        git config user.email '${{vars.EMAIL}}'
 
         git checkout -b $branch
         git add solution
