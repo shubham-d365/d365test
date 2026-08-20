@@ -56,8 +56,8 @@ jobs:
           "list = $($selected -join ',')" | Out-File $env:GITHUB_OUTPUT -Append
   
       - name: Install Power Platform CLI
-        actions: microsoft/
-  
+        actions: microsoft/powerplatform-actions@v1.9.2
+      
       - name: Auth
         shell: pwsh
         run: |
