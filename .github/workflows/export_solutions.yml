@@ -57,12 +57,7 @@ jobs:
   
       - name: Install Power Platform CLI
         actions: microsoft/powerplatform-actions@v1.9.2
-      
-      #- name: Auth
-      #  shell: pwsh
-      #  run: |
-       #   pac auth create --environment ${{ vars.ENV_URL }} --applicationId ${{ vars.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRETS }} --tenant ${{ vars.TENANT_ID }}
-  
+
       - name: Export Pack Unpack
         shell: pwsh
         run: |
