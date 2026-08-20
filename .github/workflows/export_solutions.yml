@@ -19,7 +19,7 @@ on:
 jobs:
   export:
     name: Export Solutions
-    runs-on: window-latest
+    runs-on: windows-latest
 
     permissions: 
       contents: write
