@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Atulplugin\\MyFirstPlugin\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|c:\\atulplugin\\myfirstplugin\\myfirstcrmproject\\preimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|solutionrelative:myfirstcrmproject\\preimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|c:\\atulplugin\\myfirstplugin\\myfirstcrmproject\\taskcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|solutionrelative:myfirstcrmproject\\taskcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|c:\\atulplugin\\myfirstplugin\\myfirstcrmproject\\taskone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98D97104-2898-40DB-BF13-F4E8F27741EC}|MyFirstCRMproject\\MyFirstCRMproject.csproj|solutionrelative:myfirstcrmproject\\taskone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TaskOne.cs",
+              "DocumentMoniker": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\TaskOne.cs",
+              "RelativeDocumentMoniker": "MyFirstCRMproject\\TaskOne.cs",
+              "ToolTip": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\TaskOne.cs",
+              "RelativeToolTip": "MyFirstCRMproject\\TaskOne.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-19T03:33:37.995Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PreImage.cs",
+              "DocumentMoniker": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\PreImage.cs",
+              "RelativeDocumentMoniker": "MyFirstCRMproject\\PreImage.cs",
+              "ToolTip": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\PreImage.cs",
+              "RelativeToolTip": "MyFirstCRMproject\\PreImage.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwDEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-19T09:03:52.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TaskCreate.cs",
+              "DocumentMoniker": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\TaskCreate.cs",
+              "RelativeDocumentMoniker": "MyFirstCRMproject\\TaskCreate.cs",
+              "ToolTip": "C:\\Atulplugin\\MyFirstPlugin\\MyFirstCRMproject\\TaskCreate.cs",
+              "RelativeToolTip": "MyFirstCRMproject\\TaskCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-18T12:36:37.067Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
