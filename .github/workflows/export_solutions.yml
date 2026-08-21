@@ -140,29 +140,6 @@ jobs:
                 throw "Solution.xml not found for $s"
               }
 
-
-              Write-Host "Updating managed value in $solutionXml"
-
-              [xml]$xml = Get-Content $solutionXml -Raw
-
-              $managedNode = $xml.SelectSingleNode(
-                "//*[local-name()='Managed' or local-name()='managed']"
-              )
-
-              if ($null -eq $managedNode) {
-                throw "Managed node not found in $solutionXml"
-              }
-
-
-              Write-Host "Old value: $($managedNode.InnerText)"
-
-              $managedNode.InnerText = "both"
-
-              $xml.Save($solutionXml)
-
-              Write-Host "New value: $($managedNode.InnerText)"
-
-
               pac solution pack `
                 --folder "solution/$s" `
                 --zipfile "artifact/managed/$s.zip" `
