@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       stage:
-        description: "A | B"
+        description: "BUILD | TEST"
         required: true
         type: string
 
