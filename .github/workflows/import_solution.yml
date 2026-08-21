@@ -1,0 +1,42 @@
+name: Import Solution
+
+on:
+  workflow_run:
+    workflows: ["Export Solution"]
+    types: [completed]
+
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: 'Run ID'
+        required: true
+      solution_filter:
+        description: 'Comma seprated solution'
+        required: false
+        default: ''
+
+jobs:
+  prepare:
+    runs-on: windows-latest
+    if: >
+      github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    outputs:
+      solutions: ${{ steps.plan.outputs.solutions }}
+      run_id: ${{ steps.plan.outputs.run_id }}
+
+    steps:
+        - name: Resolve source run
+          id: src
+          shell: pwsh
+          run: |
+            if('${{ github.event_name }}' -eq "workflow_dispatch"){
+              $id = '${{ inputs.source_run_id }}'
+            }else{
+              $id = '${{ github.event.workflow_run.id }}'
+            }
+
+
+
+
+    
+    
