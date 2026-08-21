@@ -125,7 +125,19 @@ jobs:
     uses: ./.github/workflows/common_solution_import.yml
 
     with:
-      stage: A
+      stage: 'BUILD'
+      solution: ${{ needs.prepare.outputs.solutions }}
+      source_run_id: ${{ needs.prepare.outputs.run_id }}
+
+    secrets: inherit
+
+  test:
+    needs: prepare
+
+    uses: ./.github/workflows/common_solution_import.yml
+
+    with:
+      stage: 'TEST'
       solution: ${{ needs.prepare.outputs.solutions }}
       source_run_id: ${{ needs.prepare.outputs.run_id }}
 
