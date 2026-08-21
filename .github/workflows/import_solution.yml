@@ -62,7 +62,36 @@ jobs:
 
             write-host "Artifact contain : $($available -join, ', ')"
 
-            $filter = ''
+            $filter = '${{ inputs.solution_filter }}'
+             if([string]::IsNullOrWhiteSpace($filter)){
+               $selected = $available
+             }else{
+               $requested = $filter.Split(',') | ForEach-Object {$_.Trim() } | Where-Oject { $_ -ne '' }
+               $selected = @($available | Where-Oject { $available -notcontains $_ })
+
+               if($missing.Count -gt 0){
+                 write-warning "Not present in artifact, ignore: $($missing -join ', ')"
+               }
+
+               if($selected.Count -gt 0){
+                 write-warning "None of the reuested solutions in artifact"
+                 exit 1
+               }
+             }
+
+             write-host "Deploying: $($selected -join ', ')"
+             "solutions=$($selected -join ',')" | Out-File $env:GITHUB_OUTPUT -Append
+             "run_id=${{ steps.src.outputs.id }}" | Out-File $env:GITHUB_OUTPUT -Append
+
+
+  build:
+    needs: prepare
+    uses: ./.github/workflows/common_solution_import.yml
+    with:
+      stage: A
+      solutions: ${{ needs.prepare.outputs.solutions }}
+      source_run_id: ${{ needs.prepare.outputs.run_id }}
+    secrets: inherit
 
 
 
