@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConnectionRoles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ConnectionRoles>
+    <ConnectionRole>
+      <connectionroleid>{eda69fc6-0b5f-44fb-b584-7dfeb8a925af}</connectionroleid>
+      <name>Parent</name>
+      <category>2</category>
+      <IntroducedVersion>9.0.4.0066</IntroducedVersion>
+      <ConnectionRoleObjectTypeCodes>
+        <ConnectionRoleObjectTypeCode>
+          <connectionroleobjecttypecodeid>{3d266c93-9ae2-41ba-8138-4d63aeae6a15}</connectionroleobjecttypecodeid>
+          <associatedobjecttypecode>contact</associatedobjecttypecode>
+        </ConnectionRoleObjectTypeCode>
+        <ConnectionRoleObjectTypeCode>
+          <connectionroleobjecttypecodeid>{14c8bd8e-223f-4ae8-a8dc-6af61beac5c9}</connectionroleobjecttypecodeid>
+          <associatedobjecttypecode>lead</associatedobjecttypecode>
+        </ConnectionRoleObjectTypeCode>
+        <ConnectionRoleObjectTypeCode>
+          <connectionroleobjecttypecodeid>{d8fb9e91-58d0-4eb6-94a1-622c503faae3}</connectionroleobjecttypecodeid>
+          <associatedobjecttypecode>systemuser</associatedobjecttypecode>
+        </ConnectionRoleObjectTypeCode>
+      </ConnectionRoleObjectTypeCodes>
+    </ConnectionRole>
+  </ConnectionRoles>
+  <ConnectionRoleAssociations>
+    <ConnectionRoleAssociation>
+      <connectionroleid>{eda69fc6-0b5f-44fb-b584-7dfeb8a925af}</connectionroleid>
+      <associatedconnectionroleid>{df0bf69f-333c-4e9b-86e7-4ff737bc9343}</associatedconnectionroleid>
+    </ConnectionRoleAssociation>
+  </ConnectionRoleAssociations>
+</ConnectionRoles>
