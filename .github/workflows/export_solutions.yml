@@ -7,12 +7,12 @@ on:
         description: "All Solution"
         type: boolean
         default: false
-      common:
-        description: "All Solution"
+      CRMLearning:
+        description: "CRM Solution"
         type: boolean
         default: false
       solution2:
-        description: "All Solution"
+        description: "Solution 2"
         type: boolean
         default: false
 
