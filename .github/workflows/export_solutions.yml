@@ -69,7 +69,7 @@ jobs:
       - name: Export Pack Unpack
         shell: pwsh
         run: |
-          $solution = '${{ steps.select.outputs.list }}'.Split(',')
+          $solutions = '${{ steps.select.outputs.list }}'.Split(',')
           $failed = @()
   
           New-item -ItemType Directory -Force -Path artifact/managed | Out-Null
