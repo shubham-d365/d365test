@@ -7,10 +7,12 @@ on:
         description: "All Solution"
         type: boolean
         default: false
+
       CRMLearning:
         description: "CRM Solution"
         type: boolean
         default: false
+
       solution2:
         description: "Solution 2"
         type: boolean
@@ -21,151 +23,226 @@ jobs:
     name: Export Solutions
     runs-on: windows-latest
 
-    permissions: 
+    permissions:
       contents: write
       pull-requests: write
 
     steps:
+
       - name: Checkout source branch
         uses: actions/checkout@v4
-        with: 
+        with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
-  
+
+
       - name: Resolve selected solutions
         id: select
         shell: pwsh
         run: |
           $all = @('CRMLearning', 'solution2')
-          if('${{inputs.export_all}}' -eq 'true'){
+
+          if ('${{ inputs.export_all }}' -eq 'true') {
             $selected = $all
-          }else{
-            $picked = @('${{inputs.CRMLearning}}', '${{inputs.solution2}}')
+          }
+          else {
+            $picked = @(
+              '${{ inputs.CRMLearning }}',
+              '${{ inputs.solution2 }}'
+            )
+
             $selected = @()
-            for($i=0; $i -lt $all.Count; $i++){
-              if($picked[$i] -eq 'true'){
+
+            for ($i = 0; $i -lt $all.Count; $i++) {
+              if ($picked[$i] -eq 'true') {
                 $selected += $all[$i]
               }
             }
           }
-          if($selected.Count -eq 0){
-            write-error "Nothing selected"
+
+          if ($selected.Count -eq 0) {
+            Write-Error "Nothing selected"
             exit 1
           }
-          write-host "Select: $($selected -join ', ')"
-          "list=$($selected -join ',')" >> $env:GITHUB_OUTPUT
-  
+
+          Write-Host "Selected: $($selected -join ', ')"
+
+          "list=$($selected -join ',')" |
+            Out-File $env:GITHUB_OUTPUT -Append
+
+
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
         with:
           add-tools-to-path: true
 
-            
+
       - name: Auth
         shell: pwsh
         run: |
-          pac auth create --environment ${{ vars.ENV_URL }} --applicationId ${{ vars.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRETS }} --tenant ${{ vars.TENANT_ID }}
-  
+          pac auth create `
+            --environment ${{ vars.ENV_URL }} `
+            --applicationId ${{ vars.CLIENT_ID }} `
+            --clientSecret ${{ secrets.CLIENT_SECRETS }} `
+            --tenant ${{ vars.TENANT_ID }}
+
 
       - name: Export Pack Unpack
         shell: pwsh
         run: |
           $solutions = '${{ steps.select.outputs.list }}'.Split(',')
-          write-host "Solutions: $($solutions -join ', ')"
+
+          Write-Host "Solutions: $($solutions -join ', ')"
+
           $failed = @()
-  
-          New-item -ItemType Directory -Force -Path artifact/managed | Out-Null
-          New-item -ItemType Directory -Force -Path artifact/unmanaged | Out-Null
-  
-          foreach($s in $solutions){
-            write-host ":: group ::"
-            try{
-              pac solution export --path "out/$s.zip" --name $s --managed false 
-              if($LASTEXITCODE -ne 0){
-                throw "Unmanged export failed"
-              }
-              pac solution unpack --zipfile "out/$s.zip" --folder "solution/$s"
-              if($LASTEXITCODE -ne 0){
-                throw "Unpacked failed"
-              }
-              
-              $solutionXml = "solution/$s/Other/Solution.xml"
-              if (Test-Path $solutionXml) {
-                  Write-Host "Updating managed value in $solutionXml"
-                  [xml]$xml = Get-Content $solutionXml
-                  $managedNode = $xml.SelectSingleNode("//Managed")
-                  if ($null -ne $managedNode) {
-                      Write-Host "Old value: $($managedNode.InnerText)"
-                      $managedNode.InnerText = "Both"
-                      $xml.Save($solutionXml)
-                      Write-Host "New value: $($managedNode.InnerText)"
-                  }
-                  else {
-                      Write-Warning "managed node not found in $solutionXml"
-                  }
-              }
-              else {
-                  Write-Warning "$solutionXml does not exist"
+
+          New-Item -ItemType Directory -Force -Path "out" | Out-Null
+          New-Item -ItemType Directory -Force -Path "artifact/managed" | Out-Null
+          New-Item -ItemType Directory -Force -Path "artifact/unmanaged" | Out-Null
+
+          foreach ($s in $solutions) {
+
+            $s = $s.Trim()
+
+            Write-Host ""
+            Write-Host "=========================================="
+            Write-Host "Processing: $s"
+            Write-Host "=========================================="
+
+            try {
+
+              pac solution export `
+                --path "out/$s.zip" `
+                --name $s `
+                --managed false
+
+              if ($LASTEXITCODE -ne 0) {
+                throw "Unmanaged export failed"
               }
 
-              pac solution pack --folder "solution/$s" --zipfile "artifact/managed/$s.zip" --packagetype Managed
-              
-              if($LASTEXITCODE -ne 0) {
-                  throw "Solution pack failed"
+
+              pac solution unpack `
+                --zipfile "out/$s.zip" `
+                --folder "solution/$s"
+
+              if ($LASTEXITCODE -ne 0) {
+                throw "Solution unpack failed"
               }
-              
-              Write-Host "$s managed solution packed successfully"
-              
-              Copy-Item "out/$s.zip" "artifact/unmanaged/$s.zip"
-  
-              write-host "$s exported"
-              }catch{
-                write-warning "$s FAILED - $_"
-                $failed += $s
+
+
+              $solutionXml = "solution/$s/Other/Solution.xml"
+
+              if (-not (Test-Path $solutionXml)) {
+                $solutionXml = "solution/$s/other/solution.xml"
               }
-              write-host "End"
+
+              if (-not (Test-Path $solutionXml)) {
+                throw "Solution.xml not found for $s"
+              }
+
+
+              Write-Host "Updating managed value in $solutionXml"
+
+              [xml]$xml = Get-Content $solutionXml -Raw
+
+              $managedNode = $xml.SelectSingleNode(
+                "//*[local-name()='Managed' or local-name()='managed']"
+              )
+
+              if ($null -eq $managedNode) {
+                throw "Managed node not found in $solutionXml"
+              }
+
+
+              Write-Host "Old value: $($managedNode.InnerText)"
+
+              $managedNode.InnerText = "both"
+
+              $xml.Save($solutionXml)
+
+              Write-Host "New value: $($managedNode.InnerText)"
+
+
+              pac solution pack `
+                --folder "solution/$s" `
+                --zipfile "artifact/managed/$s.zip" `
+                --packagetype Managed
+
+              if ($LASTEXITCODE -ne 0) {
+                throw "Managed solution pack failed"
+              }
+
+
+              if (-not (Test-Path "artifact/managed/$s.zip")) {
+                throw "Managed ZIP was not created"
+              }
+
+
+              Copy-Item `
+                "out/$s.zip" `
+                "artifact/unmanaged/$s.zip" `
+                -Force
+
+              Write-Host "$s exported successfully"
+
             }
+            catch {
+              Write-Warning "$s FAILED - $_"
+              $failed += $s
+            }
+
+            Write-Host "End processing $s"
+          }
+
+
+          if ($failed.Count -gt 0) {
+            Write-Error "Failed solutions: $($failed -join ', ')"
+            exit 1
+          }
+
 
       - name: Write manifest
         shell: pwsh
         run: |
           $solutions = '${{ steps.select.outputs.list }}'.Split(',')
+
           @{
-            solutions = $solutions
+            solution = $solutions
             source_branch = '${{ github.ref_name }}'
             run_number = '${{ github.run_number }}'
             exported_by = '${{ github.actor }}'
             exported_utc = (Get-Date).ToUniversalTime().ToString('o')
-          } | ConvertTo-Json -Depth 3 | Out-File artifact/manifest.json -Encoding utf8
-  
-          Get-Content artifact/manifest.json
+          } |
+          ConvertTo-Json -Depth 3 |
+          Out-File "artifact/manifest.json" -Encoding utf8
+
+          Get-Content "artifact/manifest.json"
+
 
       - name: Push unpacked source to feature
         shell: pwsh
         run: |
-          $branch = "feat/solution_${{github.run_number}}"
-          git config user.name 'github-action[bot]'
-          git config user.email '${{vars.EMAIL}}'
-  
-          git checkout -b $branch
-          git add solution
-  
-          if(git diff --cached --quiet){
-            write-host "No Solution"
-          }else{
-            git commit -m "Adding unpack solutions"
-            git push origin $branch
-            write-host "Pushed to $branch"
-          }
-
-      - name: Create Pull Request
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
           $baseBranch = "${{ github.ref_name }}"
           $featureBranch = "feat/solution_${{ github.run_number }}"
-          gh pr create --base $baseBranch --head $featureBranch --title "Update solution - Run ${{ github.run_number }}" --body "Adding unpack solutions"
+
+          git config user.name "github-action[bot]"
+          git config user.email "${{ vars.EMAIL }}"
+
+          git checkout -b $featureBranch
+
+          git add solution
+
+          if (git diff --cached --quiet) {
+            Write-Host "No Solution changes"
+            exit 0
+          }
+
+          git commit -m "Adding unpack solutions"
+
+          git push origin $featureBranch
+
+          Write-Host "Pushed to $featureBranch"
+
 
       - name: Upload solution artifacts
         uses: actions/upload-artifact@v4
@@ -175,7 +252,16 @@ jobs:
           if-no-files-found: error
 
 
+      - name: Create Pull Request
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $baseBranch = "${{ github.ref_name }}"
+          $featureBranch = "feat/solution_${{ github.run_number }}"
 
-
-
-    
+          gh pr create `
+            --base $baseBranch `
+            --head $featureBranch `
+            --title "Update solution - Run ${{ github.run_number }}" `
+            --body "Adding unpack solutions"
