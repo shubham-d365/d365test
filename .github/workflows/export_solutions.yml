@@ -87,6 +87,34 @@ jobs:
               if($LASTEXITCODE -ne 0){
                 throw "Unpacked failed"
               }
+              
+              $solutionXml = "solution/$s/Other/Solution.xml"
+              if (Test-Path $solutionXml) {
+                  Write-Host "Updating managed value in $solutionXml"
+                  [xml]$xml = Get-Content $solutionXml
+                  $managedNode = $xml.SelectSingleNode("//Managed")
+                  if ($null -ne $managedNode) {
+                      Write-Host "Old value: $($managedNode.InnerText)"
+                      $managedNode.InnerText = "Both"
+                      $xml.Save($solutionXml)
+                      Write-Host "New value: $($managedNode.InnerText)"
+                  }
+                  else {
+                      Write-Warning "managed node not found in $solutionXml"
+                  }
+              }
+              else {
+                  Write-Warning "$solutionXml does not exist"
+              }
+
+              pac solution pack --folder "solution/$s" --zipfile "artifact/managed/$s.zip" --packagetype Managed
+              
+              if($LASTEXITCODE -ne 0) {
+                  throw "Solution pack failed"
+              }
+              
+              Write-Host "$s managed solution packed successfully"
+              
               Copy-Item "out/$s.zip" "artifact/unmanged/$s.zip"
   
               write-host "$s exported"
@@ -128,7 +156,22 @@ jobs:
             git push origin $branch
             write-host "Pushed to $branch"
           }
-        
+
+      - name: Create Pull Request
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $baseBranch = "${{ github.ref_name }}"
+          $featureBranch = "feat/solution_${{ github.run_number }}"
+          gh pr create --base $baseBranch --head $featureBranch --title "Update solution - Run ${{ github.run_number }}" --body "Adding unpack solutions"
+
+      - name: Upload solution artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: exported-solutions-${{ github.run_number }}
+          path: artifact/
+          if-no-files-found: error
 
 
 
