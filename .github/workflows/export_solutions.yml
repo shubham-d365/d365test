@@ -78,7 +78,7 @@ jobs:
           foreach($s in $solutions){
             write-host ":: group ::"
             try{
-              pac solution export --path "out/$s.zip" --name $s --unmanaged false --overwrite
+              pac solution export --path "out/$s.zip" --name $s --managed false 
               if($LASTEXITCODE -ne 0){
                 throw "Unmanged export failed"
               }
