@@ -35,6 +35,29 @@ jobs:
               $id = '${{ github.event.workflow_run.id }}'
             }
 
+            write-host "Source run ID: $id"
+            "id=$id" | Out-File $env:GITHUB_OUTPUT -Append
+
+        - name: Download export artifact
+          uses: actions/download-artifact@v4
+          with:
+            run-id: ${{ steps.src.outputs.id }}
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            pattern: solution-*
+            merge-multiple: true
+            path: artifact
+
+        - name: Build Deployment Plan
+          id: plan
+          shell: pwsh
+          run: |
+            $manifestPath = 'artifact/manifact.json'
+            if(-not (Test-Path $manifestPath)){
+              write-error "Manifest File is not there"
+              exit 1
+            }
+
+            $manifest = Get-Content $
 
 
 
