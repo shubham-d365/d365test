@@ -1,0 +1,68 @@
+name: Import Common
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        description: 'A | B'
+        required: true
+        type: string
+
+      solution:
+        required: true
+        type: string
+
+      source_run_id:
+        required: true
+        type: string
+
+jobs:
+  import:
+    runs-on: windows-latest
+    environment: ${{ inputs.stage }}
+
+    steps:
+      - name: Download export artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: solution-*
+          merge-multiple: true
+          path: artifact
+
+      - name: Auth
+        shell: pwsh
+        run: |
+          pac auth create --environment ${{ vars.ENV_URL }} --applicationId ${{ vars.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRETS }} --tenant ${{ vars.TENANT_ID }}
+
+
+      - name: Import managed solution
+        shell: pwsh
+        run: |
+          $solutions = '${{ inputs.solution }}'.Split(',')
+          $failed = @()
+          foreach($s in $solutions){
+            write-host "::group::"
+            $zip = "artifact/managed/$s.zip"
+
+            if(-not (Test-Path $zip)){
+              $failed += $s
+              write-host "::end group::"
+              continue
+            }
+            pac solution import --path $zip --force-overwrite --publish-changes --activate-plugin --async
+
+            if($LASTEXITCODE -ne 0){
+              $failed += $s
+            }
+            write-host "::endgroup::"            
+          }
+
+          if($failed.Count -gt 0){
+            write-error "Failed for $($failed -join ', ')"
+            exit 1
+          }
+      
+
+        
