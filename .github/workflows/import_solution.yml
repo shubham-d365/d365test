@@ -132,7 +132,7 @@ jobs:
     secrets: inherit
 
   test:
-    needs: prepare
+    needs: [build, prepare]
 
     uses: ./.github/workflows/common_solution_import.yml
 
