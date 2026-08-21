@@ -52,7 +52,7 @@ jobs:
             exit 1
           }
           write-host "Select: $($selected -join ', ')"
-          "list = $($selected -join ',')" | Out-File $env:GITHUB_OUTPUT -Append
+          "list=$($selected -join ',')" >> $env:GITHUB_OUTPUT
   
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
@@ -70,6 +70,7 @@ jobs:
         shell: pwsh
         run: |
           $solutions = '${{ steps.select.outputs.list }}'.Split(',')
+          write-host "Solutions: $($solutions -join ', ')"
           $failed = @()
   
           New-item -ItemType Directory -Force -Path artifact/managed | Out-Null
