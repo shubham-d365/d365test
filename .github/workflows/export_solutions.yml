@@ -131,7 +131,7 @@ jobs:
         run: |
           $solutions = '${{ steps.select.outputs.list }}'.Split(',')
           @{
-            solution = $solutions
+            solutions = $solutions
             source_branch = '${{ github.ref_name }}'
             run_number = '${{ github.run_number }}'
             exported_by = '${{ github.actor }}'
