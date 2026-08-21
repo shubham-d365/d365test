@@ -4,65 +4,103 @@ on:
   workflow_call:
     inputs:
       stage:
-        description: 'A | B'
+        description: "A | B"
         required: true
         type: string
 
       solution:
+        description: "Comma separated solution names"
         required: true
         type: string
 
       source_run_id:
+        description: "Export workflow run ID"
         required: true
         type: string
 
 jobs:
   import:
     runs-on: windows-latest
+
     environment: ${{ inputs.stage }}
 
     steps:
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
+        with:
+          add-tools-to-path: true
+
       - name: Download export artifact
         uses: actions/download-artifact@v4
         with:
           run-id: ${{ inputs.source_run_id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: solution-*
+          github-token: ${{ github.token }}
+          pattern: exported-solutions-*
           merge-multiple: true
           path: artifact
+
+      - name: Show artifact contents
+        shell: pwsh
+        run: |
+          if (Test-Path "artifact") {
+            Get-ChildItem "artifact" -Recurse |
+              Select-Object FullName
+          }
+          else {
+            Write-Error "Artifact folder not found."
+            exit 1
+          }
 
       - name: Auth
         shell: pwsh
         run: |
-          pac auth create --environment ${{ vars.ENV_URL }} --applicationId ${{ vars.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRETS }} --tenant ${{ vars.TENANT_ID }}
-
+          pac auth create `
+            --environment ${{ vars.ENV_URL }} `
+            --applicationId ${{ vars.CLIENT_ID }} `
+            --clientSecret ${{ secrets.CLIENT_SECRETS }} `
+            --tenant ${{ vars.TENANT_ID }}
 
       - name: Import managed solution
         shell: pwsh
         run: |
           $solutions = '${{ inputs.solution }}'.Split(',')
           $failed = @()
-          foreach($s in $solutions){
-            write-host "::group::"
-            $zip = "artifact/managed/$s.zip"
 
-            if(-not (Test-Path $zip)){
+          foreach($s in $solutions) {
+
+            $s = $s.Trim()
+
+            Write-Host "Importing: $s"
+
+            $zip = "artifact/managed/$s-managed.zip"
+
+            if (-not (Test-Path $zip)) {
+              Write-Warning "Managed solution ZIP not found: $zip"
               $failed += $s
-              write-host "::end group::"
               continue
             }
-            pac solution import --path $zip --force-overwrite --publish-changes --activate-plugin --async
 
-            if($LASTEXITCODE -ne 0){
+            Write-Host "ZIP: $zip"
+
+            pac solution import `
+              --path "$zip" `
+              --force-overwrite `
+              --publish-changes `
+              --activate-plugins `
+              --async
+
+            if($LASTEXITCODE -ne 0) {
+              Write-Warning "Import failed for $s"
               $failed += $s
             }
-            write-host "::endgroup::"            
+            else {
+              Write-Host "Import successful for $s"
+            }
           }
 
-          if($failed.Count -gt 0){
-            write-error "Failed for $($failed -join ', ')"
+          if($failed.Count -gt 0) {
+            Write-Error "Failed solutions: $($failed -join ', ')"
             exit 1
           }
-      
 
-        
+          Write-Host "All solutions imported successfully."
