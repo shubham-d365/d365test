@@ -116,7 +116,7 @@ jobs:
               
               Write-Host "$s managed solution packed successfully"
               
-              Copy-Item "out/$s.zip" "artifact/unmanged/"
+              Copy-Item "out/$s.zip" "artifact/unmanaged/$s.zip"
   
               write-host "$s exported"
               }catch{
