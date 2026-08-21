@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       stage:
-        description: "BUILD | TEST"
+        description: "BUID | TEST"
         required: true
         type: string
 
@@ -18,6 +18,7 @@ on:
         required: true
         type: string
 
+
 jobs:
   import:
     runs-on: windows-latest
@@ -25,10 +26,12 @@ jobs:
     environment: ${{ inputs.stage }}
 
     steps:
+
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
         with:
           add-tools-to-path: true
+
 
       - name: Download export artifact
         uses: actions/download-artifact@v4
@@ -39,68 +42,100 @@ jobs:
           merge-multiple: true
           path: artifact
 
+
       - name: Show artifact contents
         shell: pwsh
         run: |
-          if (Test-Path "artifact") {
-            Get-ChildItem "artifact" -Recurse |
-              Select-Object FullName
-          }
-          else {
-            Write-Error "Artifact folder not found."
-            exit 1
-          }
+          Get-ChildItem artifact -Recurse |
+            Select-Object FullName
+
 
       - name: Auth
         shell: pwsh
         run: |
           pac auth create `
-            --environment ${{ vars.ENV_URL }} `
-            --applicationId ${{ vars.CLIENT_ID }} `
-            --clientSecret ${{ secrets.CLIENT_SECRETS }} `
-            --tenant ${{ vars.TENANT_ID }}
+            --environment "${{ vars.ENV_URL }}" `
+            --applicationId "${{ vars.CLIENT_ID }}" `
+            --clientSecret "${{ secrets.CLIENT_SECRETS }}" `
+            --tenant "${{ vars.TENANT_ID }}"
 
-      - name: Import managed solution
+
+      - name: Prepare solution sequence
+        id: sequence
         shell: pwsh
         run: |
-          $solutions = '${{ inputs.solution }}'.Split(',')
-          $failed = @()
+          $requested = '${{ inputs.solution }}'.Split(',') |
+            ForEach-Object { $_.Trim() } |
+            Where-Object { $_ -ne '' }
 
-          foreach($s in $solutions) {
+          $sequence = @(
+            "solution1",
+            "solution2",
+            "solution3",
+            "solution4",
+            "solution5",
+            "solution6",
+            "solution7",
+            "solution8",
+            "solution9"
+          )
+
+          $selected = @(
+            $sequence |
+            Where-Object { $_ -in $requested }
+          )
+
+          if ($selected.Count -eq 0) {
+            Write-Error "No valid solutions selected."
+            exit 1
+          }
+
+          Write-Host "Import sequence: $($selected -join ', ')"
+
+          "list=$($selected -join ',')" |
+            Out-File $env:GITHUB_OUTPUT -Append
+
+
+      - name: Import solutions
+        shell: pwsh
+        run: |
+          $solutions = '${{ steps.sequence.outputs.list }}'.Split(',')
+
+          foreach ($s in $solutions) {
 
             $s = $s.Trim()
 
+            Write-Host ""
+            Write-Host "=========================================="
             Write-Host "Importing: $s"
+            Write-Host "=========================================="
 
             $zip = "artifact/managed/$s.zip"
 
             if (-not (Test-Path $zip)) {
-              Write-Warning "Managed solution ZIP not found: $zip"
-              $failed += $s
-              continue
+              Write-Error "Managed solution ZIP not found: $zip"
+              exit 1
             }
 
-            Write-Host "ZIP: $zip"
+            Write-Host "Importing $s..."
 
             pac solution import `
               --path "$zip" `
               --force-overwrite `
-              --publish-changes `
               --activate-plugins `
               --async
 
-            if($LASTEXITCODE -ne 0) {
-              Write-Warning "Import failed for $s"
-              $failed += $s
+            if ($LASTEXITCODE -ne 0) {
+              Write-Error "Solution import failed: $s"
+              exit 1
             }
-            else {
-              Write-Host "Import successful for $s"
-            }
+
+            Write-Host "$s imported successfully."
           }
 
-          if($failed.Count -gt 0) {
-            Write-Error "Failed solutions: $($failed -join ', ')"
-            exit 1
-          }
 
-          Write-Host "All solutions imported successfully."
+      - name: Publish solutions
+        shell: pwsh
+        run: |
+
+            pac solution publish 
