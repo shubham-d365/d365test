@@ -72,7 +72,7 @@ jobs:
 
             Write-Host "Importing: $s"
 
-            $zip = "artifact/managed/$s-managed.zip"
+            $zip = "artifact/managed/$s.zip"
 
             if (-not (Test-Path $zip)) {
               Write-Warning "Managed solution ZIP not found: $zip"
