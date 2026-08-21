@@ -69,7 +69,7 @@ jobs:
             Where-Object { $_ -ne '' }
 
           $sequence = @(
-            "solution1",
+            "common",
             "solution2",
             "solution3",
             "solution4",
