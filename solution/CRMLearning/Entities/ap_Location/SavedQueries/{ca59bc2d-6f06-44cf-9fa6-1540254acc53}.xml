@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{ca59bc2d-6f06-44cf-9fa6-1540254acc53}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="ap_name" select="1" icon="1" preview="1">
+        <row name="result" id="ap_locationid">
+          <cell name="ap_name" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="ap_location">
+          <attribute name="ap_locationid" />
+          <attribute name="ap_name" />
+          <attribute name="createdon" />
+          <order attribute="ap_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Locations" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{5090f3cf-dd6a-4044-814f-764babd0e522}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{b332e2dd-c78f-467a-8c2f-24ae0af64677}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{772cd858-d5ad-4fc3-8b6c-c9e1bf374612}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{73f175c0-2ada-4048-a109-f806f1316268}">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="ap_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="ap_name" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c71e3c21-baed-4378-a7c8-1c95c9276637}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Locator" languagecode="1033" />
+                        </labels>
+                        <control id="ap_locator" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ap_locator" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f44a1ef7-ba19-445f-b788-5e72bf781762}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Created On" languagecode="1033" />
+                        </labels>
+                        <control id="createdon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="createdon" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d992f711-8d9a-47fb-b698-9a66a1f4188a}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_2" id="f7d25ed7-1c9e-4945-a41b-2e7a44bd1c75" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Sub-location" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_2_section_1" id="52936e70-542c-4ebb-91ae-011511a13fcc" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row />
+                    <row>
+                      <cell locklevel="0" id="{18a580cd-5a99-4fab-90ac-a3d1d5b1b327}" rowspan="4" colspan="1" auto="false" showlabel="false" availableforphone="true">
+                        <labels>
+                          <label description="locator" languagecode="1033" />
+                        </labels>
+                        <control indicationOfSubgrid="true" id="Subgrid_new_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}">
+                          <parameters>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <ChartGridMode>All</ChartGridMode>
+                            <RelationshipName>ap_Location_Locator_ap_Location</RelationshipName>
+                            <TargetEntityType>ap_location</TargetEntityType>
+                            <ViewId>{052B7D2E-C1FF-4AB8-9D9E-5754037C85FD}</ViewId>
+                            <ViewIds>{052B7D2E-C1FF-4AB8-9D9E-5754037C85FD}</ViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{9710435a-c08a-4981-b30f-07f4b3364dd1}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{66e213de-776e-4e9c-b21b-635a76e1ba22}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{b335680f-a100-4820-a017-5f8f785ce55b}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{81e6a124-fab9-46e4-81cf-c6787fbbd7c1}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{13b6ba35-5a48-49dc-a725-5cb74ca1ce6d}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{7750592a-dc1b-45c0-99e4-fc81f322c232}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{81f3a51b-a8d1-4d5f-9408-91bf2b06eb2d}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{18abaadc-6a59-4146-ae44-2f1a9ce3a36e}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{119dcca6-a63a-4ef5-9acd-9cd5ecd65937}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{9b3cee20-d54b-41de-a2c7-9195a1c943ac}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{85e1d835-9b80-4265-97b2-c0135733de78}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{45b23b73-97e4-4472-bc8d-7916df75c6f4}">
+                        <labels>
+                          <label description="Item name " languagecode="1033" />
+                        </labels>
+                        <control id="ap_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="ap_name" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b923f64f-9fd2-4a31-8ded-a17d1b28ffa3}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Amount" languagecode="1033" />
+                        </labels>
+                        <control id="ap_amount" classid="{533B9E00-756B-4312-95A0-DC888637AC78}" datafieldname="ap_amount" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dedafeed-89ac-46ef-af7e-ac9e0cce4ea1}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Item type" languagecode="1033" />
+                        </labels>
+                        <control id="ap_itemtype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="ap_itemtype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4deea125-d491-4aff-bf24-b3e2cb83d784}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Expense_CRM" languagecode="1033" />
+                        </labels>
+                        <control id="ap_expense_crm" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ap_expense_crm" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c5e3b1e8-c0fb-4037-864c-1fa649520fb4}" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{2608def0-8dd3-454d-9dc6-4555d12220c5}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{08e7fcaf-a546-4eca-8d15-e9baffab2914}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{d01e376d-7dfd-496d-a1bd-deee3a93e650}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{32ed042e-1ddc-4518-8cc3-0495a99bccfc}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{2ca9c062-0550-4b58-8396-40ac8d9ca0c1}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{584a939e-7759-4b60-a755-557b234931a3}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{7a7ff78d-02b8-4e31-a79a-75faa6c85a3a}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{e752cbda-da9b-451d-8d30-7bb89c3d761c}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>
