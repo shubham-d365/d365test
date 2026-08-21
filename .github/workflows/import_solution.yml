@@ -8,81 +8,144 @@ on:
   workflow_dispatch:
     inputs:
       source_run_id:
-        description: 'Run ID'
+        description: "Run ID"
         required: true
+        type: string
+
       solution_filter:
-        description: 'Comma seprated solution'
+        description: "Comma separated solution names"
         required: false
-        default: ''
+        default: ""
+        type: string
+
 
 jobs:
   prepare:
     runs-on: windows-latest
+
     if: >
-      github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
     outputs:
       solutions: ${{ steps.plan.outputs.solutions }}
       run_id: ${{ steps.plan.outputs.run_id }}
 
+    permissions:
+      actions: read
+      contents: read
+
     steps:
-        - name: Resolve source run
-          id: src
-          shell: pwsh
-          run: |
-            if('${{ github.event_name }}' -eq "workflow_dispatch"){
-              $id = '${{ inputs.source_run_id }}'
-            }else{
-              $id = '${{ github.event.workflow_run.id }}'
+      - name: Resolve source run
+        id: src
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $id = '${{ inputs.source_run_id }}'
+          }
+          else {
+            $id = '${{ github.event.workflow_run.id }}'
+          }
+          Write-Host "Source Run ID: $id"
+          "id=$id" | Out-File $env:GITHUB_OUTPUT -Append
+
+      - name: Download export artifact
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ steps.src.outputs.id }}
+          github-token: ${{ github.token }}
+          pattern: exported-solutions-*
+          merge-multiple: true
+          path: artifact
+
+      - name: Show artifact contents
+        shell: pwsh
+        run: |
+          Write-Host "Downloaded artifact contents:"
+          if (Test-Path "artifact") {
+            Get-ChildItem "artifact" -Recurse |
+              Select-Object FullName
+          }
+          else {
+            Write-Error "Artifact folder was not created."
+            exit 1
+          }
+
+      - name: Build Deployment Plan
+        id: plan
+        shell: pwsh
+        run: |
+          $manifestPath = "artifact/manifest.json"
+          if (-not (Test-Path $manifestPath)) {
+            Write-Error "Manifest file not found: $manifestPath"
+            Write-Host "Available files:"
+            Get-ChildItem "artifact" -Recurse |
+              Select-Object FullName
+            exit 1
+          }
+
+          $manifest = Get-Content $manifestPath -Raw |
+            ConvertFrom-Json
+
+          $available = @($manifest.solution)
+          if ($available.Count -eq 0) {
+            Write-Error "No solutions found in manifest."
+            exit 1
+          }
+
+          Write-Host "Solutions available in artifact:"
+          Write-Host "$($available -join ', ')"
+
+          $filter = '${{ inputs.solution_filter }}'
+          if ([string]::IsNullOrWhiteSpace($filter)) {
+            $selected = @($available)
+            Write-Host "No solution filter provided."
+            Write-Host "All solutions will be deployed."
+          }
+          else {
+            $requested = @(
+              $filter.Split(',') |
+              ForEach-Object {
+                $_.Trim()
+              } |
+              Where-Object {
+                $_ -ne ''
+              }
+            )
+
+            Write-Host "Requested solutions:"
+            Write-Host "$($requested -join ', ')"
+
+            $missing = @(
+              $requested |
+              Where-Object {
+                $_ -notin $available
+              }
+            )
+            $selected = @(
+              $requested |
+              Where-Object {
+                $_ -in $available
+              }
+            )
+
+            if ($missing.Count -gt 0) {
+              Write-Warning `
+                "Not present in artifact, ignoring: $($missing -join ', ')"
             }
-
-            write-host "Source run ID: $id"
-            "id=$id" | Out-File $env:GITHUB_OUTPUT -Append
-
-        - name: Download export artifact
-          uses: actions/download-artifact@v4
-          with:
-            run-id: ${{ steps.src.outputs.id }}
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            pattern: solution-*
-            merge-multiple: true
-            path: artifact
-
-        - name: Build Deployment Plan
-          id: plan
-          shell: pwsh
-          run: |
-            $manifestPath = 'artifact/manifact.json'
-            if(-not (Test-Path $manifestPath)){
-              write-error "Manifest File is not there"
+            if ($selected.Count -eq 0) {
+              Write-Error `
+                "None of the requested solutions are present in artifact."
               exit 1
             }
+          }
 
-            $manifest = Get-Content $manifestPath -Raw | CovertForm-Json
-            $available = @($manifest.solutions)
-
-            write-host "Artifact contain : $($available -join, ', ')"
-
-            $filter = '${{ inputs.solution_filter }}'
-             if([string]::IsNullOrWhiteSpace($filter)){
-               $selected = $available
-             }else{
-               $requested = $filter.Split(',') | ForEach-Object {$_.Trim() } | Where-Oject { $_ -ne '' }
-               $selected = @($available | Where-Oject { $available -notcontains $_ })
-
-               if($missing.Count -gt 0){
-                 write-warning "Not present in artifact, ignore: $($missing -join ', ')"
-               }
-
-               if($selected.Count -gt 0){
-                 write-warning "None of the reuested solutions in artifact"
-                 exit 1
-               }
-             }
-
-             write-host "Deploying: $($selected -join ', ')"
-             "solutions=$($selected -join ',')" | Out-File $env:GITHUB_OUTPUT -Append
-             "run_id=${{ steps.src.outputs.id }}" | Out-File $env:GITHUB_OUTPUT -Append
-
+          Write-Host "Solutions: $($selected -join ', ')"
+          Write-Host "Run ID: ${{ steps.src.outputs.id }}"
+          "solutions=$($selected -join ',')" |
+            Out-File $env:GITHUB_OUTPUT -Append
+          "run_id=${{ steps.src.outputs.id }}" |
+            Out-File $env:GITHUB_OUTPUT -Append
 
   build:
     needs: prepare
@@ -92,8 +155,3 @@ jobs:
       solutions: ${{ needs.prepare.outputs.solutions }}
       source_run_id: ${{ needs.prepare.outputs.run_id }}
     secrets: inherit
-
-
-
-    
-    
