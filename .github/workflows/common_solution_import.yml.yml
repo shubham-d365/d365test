@@ -1,0 +1,26 @@
+name: Import Common
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        description: 'A | B'
+        required: true
+        type: string
+
+      solution:
+        required: true
+        type: string
+
+      source_run_id:
+        required: true
+        type: string
+
+jobs:
+  import:
+    runs-on: windows-latest
+    environment: ${{ inputs.stage }}
+
+    steps:
+      - name: Download export artifact
+        uses: actions
