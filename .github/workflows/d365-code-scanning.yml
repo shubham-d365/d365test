@@ -18,7 +18,7 @@ jobs:
   # ==========================================================
   detect-changes:
     name: Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     outputs:
       solution: ${{ steps.filter.outputs.solution }}
@@ -54,7 +54,7 @@ jobs:
 
     if: needs.detect-changes.outputs.solution == 'true'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -77,10 +77,10 @@ jobs:
         run: |
           Write-Host "D365 Solution changes detected."
 
-          $solutionPath = Join-Path $env:GITHUB_WORKSPACE "D365Solution"
+          $solutionPath = Join-Path $env:GITHUB_WORKSPACE "solution"
 
           if (-not (Test-Path $solutionPath)) {
-              Write-Error "D365Solution folder not found."
+              Write-Error "solution folder not found."
               exit 1
           }
 
@@ -119,7 +119,7 @@ jobs:
 
     if: needs.detect-changes.outputs.plugin == 'true'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -236,7 +236,7 @@ jobs:
 
     if: always()
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
