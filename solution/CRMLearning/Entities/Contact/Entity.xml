@@ -38,7 +38,7 @@
           <MaxLength>1000</MaxLength>
           <Length>2000</Length>
           <displaynames>
-            <displayname description="Description" languagecode="1033" />
+            <displayname description="Description " languagecode="1033" />
           </displaynames>
           <Descriptions>
             <Description description="" languagecode="1033" />
