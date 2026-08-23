@@ -96,7 +96,7 @@ jobs:
         shell: pwsh
         run: |
 
-          $solutionRoot = Join-Path $env:GITHUB_WORKSPACE "D365Solution"
+          $solutionRoot = Join-Path $env:GITHUB_WORKSPACE "solution"
 
           $solutions = @(
               @{
@@ -234,7 +234,7 @@ jobs:
 
           Write-Host "D365 Plugin changes detected."
 
-          $pluginPath = Join-Path $env:GITHUB_WORKSPACE "D365Plugin"
+          $pluginPath = Join-Path $env:GITHUB_WORKSPACE "pluginassamblies"
 
           if (-not (Test-Path $pluginPath)) {
               Write-Error "D365Plugin folder not found."
