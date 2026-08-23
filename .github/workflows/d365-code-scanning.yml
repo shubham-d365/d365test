@@ -38,19 +38,19 @@ jobs:
           filters: |
 
             solution1:
-              - 'D365Solution/CRMLearning/**'
+              - 'solution/CRMLearning/**'
 
             solution2:
-              - 'D365Solution/common/**'
+              - 'solution/common/**'
 
             solution3:
-              - 'D365Solution/solution2/**'
+              - 'solution/solution2/**'
 
             solution4:
-              - 'D365Solution/solution3/**'
+              - 'solution/solution3/**'
 
             solution5:
-              - 'D365Solution/solution4/**'
+              - 'solution/solution4/**'
 
             plugin:
               - 'pluginassamblies/**'
