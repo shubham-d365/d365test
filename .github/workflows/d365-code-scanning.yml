@@ -100,23 +100,23 @@ jobs:
 
           $solutions = @(
               @{
-                  Name = "Solution1"
+                  Name = "CRMLearning"
                   Changed = "${{ needs.detect-changes.outputs.solution1 }}"
               },
               @{
-                  Name = "Solution2"
+                  Name = "common"
                   Changed = "${{ needs.detect-changes.outputs.solution2 }}"
               },
               @{
-                  Name = "Solution3"
+                  Name = "solution2"
                   Changed = "${{ needs.detect-changes.outputs.solution3 }}"
               },
               @{
-                  Name = "Solution4"
+                  Name = "solution3"
                   Changed = "${{ needs.detect-changes.outputs.solution4 }}"
               },
               @{
-                  Name = "Solution5"
+                  Name = "solution4"
                   Changed = "${{ needs.detect-changes.outputs.solution5 }}"
               }
           )
