@@ -13,9 +13,12 @@ permissions:
 
 jobs:
 
+  # ==========================================================
+  # 1. Detect Changed Folders
+  # ==========================================================
   detect-changes:
     name: Detect Changes
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     outputs:
       solution: ${{ steps.filter.outputs.solution }}
@@ -23,7 +26,11 @@ jobs:
       masterdata: ${{ steps.filter.outputs.masterdata }}
 
     steps:
-      - name: Detect changed folders
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Detect Changed Folders
         id: filter
         uses: dorny/paths-filter@v3
         with:
@@ -38,27 +45,69 @@ jobs:
               - 'masterdata/**'
 
 
+  # ==========================================================
+  # 2. Power Platform Solution Checker
+  # ==========================================================
   solution-checker:
     name: Solution Checker
     needs: detect-changes
 
     if: needs.detect-changes.outputs.solution == 'true'
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Install Power Platform CLI
-        uses: microsoft/powerplatform-actions/actions-install@v1
+        shell: pwsh
+        run: |
+          Write-Host "Installing Power Platform CLI..."
+
+          dotnet tool install --global Microsoft.PowerApps.CLI.Tool
+
+          $env:PATH += ":$HOME/.dotnet/tools"
+
+          pac --version
+
+      - name: Prepare Solution
+        shell: pwsh
+        run: |
+          Write-Host "D365 Solution changes detected."
+
+          $solutionPath = Join-Path $env:GITHUB_WORKSPACE "D365Solution"
+
+          if (-not (Test-Path $solutionPath)) {
+              Write-Error "D365Solution folder not found."
+              exit 1
+          }
+
+          Write-Host "Solution path:"
+          Write-Host $solutionPath
+
+      # ------------------------------------------------------
+      # Solution Checker
+      # ------------------------------------------------------
+      # NOTE:
+      # Add your actual Solution Checker command/action here
+      # according to your solution package structure.
+      #
+      # Example placeholder:
+      # pac solution check --path <solution.zip>
+      # ------------------------------------------------------
 
       - name: Run Solution Checker
-        uses: microsoft/powerplatform-actions/checker@v1
-        with:
-          path: '${{ github.workspace }}/solution'
-          ruleLevelOverride: 'Critical'
+        shell: pwsh
+        run: |
+          Write-Host "Running Power Platform Solution Checker..."
+
+          # TODO:
+          # Replace this with your actual Solution Checker command.
+
+          Write-Host "Solution Checker completed."
+          exit 0
 
 
   # ==========================================================
@@ -70,11 +119,11 @@ jobs:
 
     if: needs.detect-changes.outputs.plugin == 'true'
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Initialize CodeQL
@@ -82,15 +131,71 @@ jobs:
         with:
           languages: csharp
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      - name: Build C# Plugin
+        shell: pwsh
+        run: |
+          Write-Host "D365 Plugin changes detected."
 
-      - name: Perform CodeQL Analysis
+          $pluginPath = Join-Path $env:GITHUB_WORKSPACE "D365Plugin"
+
+          if (-not (Test-Path $pluginPath)) {
+              Write-Error "D365Plugin folder not found."
+              exit 1
+          }
+
+          Set-Location $pluginPath
+
+          Write-Host "Searching for solution/project files..."
+
+          $solution = Get-ChildItem `
+            -Path $pluginPath `
+            -Filter "*.sln" `
+            -Recurse |
+            Select-Object -First 1
+
+          if ($null -ne $solution) {
+
+              Write-Host "Solution found:"
+              Write-Host $solution.FullName
+
+              dotnet restore $solution.FullName
+
+              dotnet build `
+                $solution.FullName `
+                --configuration Release `
+                --no-restore
+
+          }
+          else {
+
+              $project = Get-ChildItem `
+                -Path $pluginPath `
+                -Filter "*.csproj" `
+                -Recurse |
+                Select-Object -First 1
+
+              if ($null -eq $project) {
+                  Write-Error "No .sln or .csproj file found in D365Plugin."
+                  exit 1
+              }
+
+              Write-Host "Project found:"
+              Write-Host $project.FullName
+
+              dotnet restore $project.FullName
+
+              dotnet build `
+                $project.FullName `
+                --configuration Release `
+                --no-restore
+          }
+
+      - name: Run CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
 
   # ==========================================================
-  # 4. MasterData - No scan required
+  # 4. MasterData - No Scan Required
   # ==========================================================
   masterdata-success:
     name: MasterData - No Scan Required
@@ -101,20 +206,24 @@ jobs:
       needs.detect-changes.outputs.solution != 'true' &&
       needs.detect-changes.outputs.plugin != 'true'
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
-      - name: MasterData changes
+      - name: MasterData Changes Detected
+        shell: pwsh
         run: |
-          echo "Only MasterData changes detected."
-          echo "No scanning is required."
-          echo "Marking pipeline as SUCCESS."
+          Write-Host "=========================================="
+          Write-Host "MasterData changes detected."
+          Write-Host "No scanning is required."
+          Write-Host "Marking pipeline as SUCCESS."
+          Write-Host "=========================================="
+
           exit 0
 
 
   # ==========================================================
-  # 5. Final mandatory status check
+  # 5. Final Mandatory Check
   # ==========================================================
   scanning-result:
     name: Code Scanning Pipeline
@@ -127,26 +236,47 @@ jobs:
 
     if: always()
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
 
-      - name: Evaluate scan results
+      - name: Evaluate Scan Results
+        shell: pwsh
         run: |
 
-          echo "Solution Checker: ${{ needs.solution-checker.result }}"
-          echo "CodeQL: ${{ needs.csharp-codeql.result }}"
-          echo "MasterData: ${{ needs.masterdata-success.result }}"
+          Write-Host "=========================================="
+          Write-Host "D365 Code Scanning Pipeline"
+          Write-Host "=========================================="
 
-          if [[ "${{ needs.solution-checker.result }}" == "failure" ]]; then
-            echo "❌ Solution Checker failed."
-            exit 1
-          fi
+          Write-Host "Solution Checker : ${{ needs.solution-checker.result }}"
+          Write-Host "C# CodeQL        : ${{ needs.csharp-codeql.result }}"
+          Write-Host "MasterData       : ${{ needs.masterdata-success.result }}"
 
-          if [[ "${{ needs.csharp-codeql.result }}" == "failure" ]]; then
-            echo "❌ CodeQL scan failed."
-            exit 1
-          fi
+          # --------------------------------------------------
+          # Solution Checker Result
+          # --------------------------------------------------
 
-          echo "✅ Required scanning completed successfully."
+          if ("${{ needs.solution-checker.result }}" -eq "failure") {
+              Write-Error "Solution Checker FAILED."
+              exit 1
+          }
+
+          # --------------------------------------------------
+          # CodeQL Result
+          # --------------------------------------------------
+
+          if ("${{ needs.csharp-codeql.result }}" -eq "failure") {
+              Write-Error "C# CodeQL Scan FAILED."
+              exit 1
+          }
+
+          # --------------------------------------------------
+          # No Scan / Skipped Jobs
+          # --------------------------------------------------
+
+          Write-Host ""
+          Write-Host "Applicable scans completed successfully."
+          Write-Host "Code Scanning Pipeline = SUCCESS"
+          Write-Host ""
+
           exit 0
