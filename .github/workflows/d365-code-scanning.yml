@@ -1,0 +1,152 @@
+name: D365 Code Scanning
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: read
+
+jobs:
+
+  detect-changes:
+    name: Detect Changes
+    runs-on: windows-latest
+
+    outputs:
+      solution: ${{ steps.filter.outputs.solution }}
+      plugin: ${{ steps.filter.outputs.plugin }}
+      masterdata: ${{ steps.filter.outputs.masterdata }}
+
+    steps:
+      - name: Detect changed folders
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            solution:
+              - 'solution/**'
+
+            plugin:
+              - 'pluginassamblies/**'
+
+            masterdata:
+              - 'masterdata/**'
+
+
+  solution-checker:
+    name: Solution Checker
+    needs: detect-changes
+
+    if: needs.detect-changes.outputs.solution == 'true'
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Power Platform CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Run Solution Checker
+        uses: microsoft/powerplatform-actions/checker@v1
+        with:
+          path: '${{ github.workspace }}/solution'
+          ruleLevelOverride: 'Critical'
+
+
+  # ==========================================================
+  # 3. C# CodeQL Scan
+  # ==========================================================
+  csharp-codeql:
+    name: C# CodeQL Scan
+    needs: detect-changes
+
+    if: needs.detect-changes.outputs.plugin == 'true'
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+
+  # ==========================================================
+  # 4. MasterData - No scan required
+  # ==========================================================
+  masterdata-success:
+    name: MasterData - No Scan Required
+    needs: detect-changes
+
+    if: |
+      needs.detect-changes.outputs.masterdata == 'true' &&
+      needs.detect-changes.outputs.solution != 'true' &&
+      needs.detect-changes.outputs.plugin != 'true'
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: MasterData changes
+        run: |
+          echo "Only MasterData changes detected."
+          echo "No scanning is required."
+          echo "Marking pipeline as SUCCESS."
+          exit 0
+
+
+  # ==========================================================
+  # 5. Final mandatory status check
+  # ==========================================================
+  scanning-result:
+    name: Code Scanning Pipeline
+
+    needs:
+      - detect-changes
+      - solution-checker
+      - csharp-codeql
+      - masterdata-success
+
+    if: always()
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Evaluate scan results
+        run: |
+
+          echo "Solution Checker: ${{ needs.solution-checker.result }}"
+          echo "CodeQL: ${{ needs.csharp-codeql.result }}"
+          echo "MasterData: ${{ needs.masterdata-success.result }}"
+
+          if [[ "${{ needs.solution-checker.result }}" == "failure" ]]; then
+            echo "❌ Solution Checker failed."
+            exit 1
+          fi
+
+          if [[ "${{ needs.csharp-codeql.result }}" == "failure" ]]; then
+            echo "❌ CodeQL scan failed."
+            exit 1
+          fi
+
+          echo "✅ Required scanning completed successfully."
+          exit 0
