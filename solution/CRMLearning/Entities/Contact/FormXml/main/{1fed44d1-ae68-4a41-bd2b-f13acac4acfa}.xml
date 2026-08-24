@@ -17,6 +17,21 @@
                       <cell id="{1b54cdb3-1582-c29e-cc9e-9d4bc2a5700b}" showlabel="true" ordinalvalue="10007" solutionaction="Removed" />
                     </row>
                     <row>
+                      <cell id="{290b48ba-c0cc-7746-6dda-93e240e4cc78}" showlabel="true" ordinalvalue="10008" solutionaction="Removed" />
+                    </row>
+                    <row>
+                      <cell id="{97f9d88b-e42a-45e5-a94c-4d29880a672e}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10008" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{408dda0b-48a7-c05c-e29a-56a93eb97172}" showlabel="true" colspan="1" rowspan="1" ordinalvalue="10009" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{133d09d6-c374-954a-315b-435e1eeb722c}" showlabel="true" locklevel="0" visible="false" ordinalvalue="10010" solutionaction="Modified" />
+                    </row>
+                    <row>
+                      <cell id="{0b968aaa-6de1-3b71-aae3-812dd49e3252}" showlabel="true" locklevel="0" visible="false" ordinalvalue="10011" solutionaction="Modified" />
+                    </row>
+                    <row>
                       <cell id="{a206b4cd-eebb-4fd5-8e61-10e9b6717f13}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10007" solutionaction="Added">
                         <labels>
                           <label description="Description" languagecode="1033" />
@@ -195,6 +210,18 @@
           </row>
         </rows>
       </header>
+      <events>
+        <event name="onsave" application="false" active="false" solutionaction="Added">
+          <Handlers>
+            <Handler functionName="Sdk.MainOnPhone" libraryName="ap_EmailChange" handlerUniqueId="{9cc0e017-7cc8-4051-8c3d-edaa43fe648a}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="false" active="false" attribute="telephone1" solutionaction="Added">
+          <Handlers>
+            <Handler functionName="Sdk.MainOnPhone" libraryName="ap_EmailChange" handlerUniqueId="{18e709c7-d9ea-4dd1-a0b1-f88e3e57cd7f}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
       <controlDescriptions>
         <controlDescription forControl="{B4C4A379-DE5C-417C-A8BB-46667E36E302}" solutionaction="Modified">
           <customControl formFactor="0" name="Consent.ContactabilityControl.ContactabilityControl">
@@ -219,6 +246,9 @@
           </customControl>
         </controlDescription>
       </controlDescriptions>
+      <formLibraries>
+        <Library name="ap_EmailChange" libraryUniqueId="{1e18268d-891c-45ee-b85e-cff34b6e7a46}" solutionaction="Added" />
+      </formLibraries>
       <footer id="{c30d95c1-2a7f-4d0f-9b3c-7b0dda2bc733}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
         <rows>
           <row>

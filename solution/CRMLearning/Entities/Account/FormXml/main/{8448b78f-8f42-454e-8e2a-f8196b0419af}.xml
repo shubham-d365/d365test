@@ -20,7 +20,7 @@
                       <cell id="{e6441984-4343-813a-aa7e-e2747ad35390}" showlabel="true" ordinalvalue="10003" solutionaction="Modified" />
                     </row>
                     <row>
-                      <cell id="{87DE203E-B03C-44CC-8B06-438202B82553}" ordinalvalue="10007" solutionaction="Modified" />
+                      <cell id="{87DE203E-B03C-44CC-8B06-438202B82553}" ordinalvalue="10008" solutionaction="Modified" />
                     </row>
                     <row>
                       <cell id="{24be16a9-e3c4-a7bb-37a6-b5c7143460e8}" showlabel="true" locklevel="0" ordinalvalue="10006" solutionaction="Removed" />
@@ -37,7 +37,15 @@
                       </cell>
                     </row>
                     <row>
-                      <cell id="{38eb305b-2cc7-45f6-bff0-924748da1869}" locklevel="0" colspan="1" rowspan="1" visible="false" ordinalvalue="10005" solutionaction="Added">
+                      <cell id="{e4e62e46-d989-4f60-b464-f978cb42c039}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10005" solutionaction="Added">
+                        <labels>
+                          <label description="Email" languagecode="1033" />
+                        </labels>
+                        <control id="emailaddress1" classid="{ADA2203E-B4CD-49BE-9DDF-234642B43B52}" datafieldname="emailaddress1" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{38eb305b-2cc7-45f6-bff0-924748da1869}" locklevel="0" colspan="1" rowspan="1" visible="false" ordinalvalue="10006" solutionaction="Added">
                         <labels>
                           <label description="TextID_01" languagecode="1033" />
                         </labels>
@@ -45,7 +53,7 @@
                       </cell>
                     </row>
                     <row>
-                      <cell id="{3be845f5-44ea-461a-8575-43c5bb839bf6}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10006" solutionaction="Added">
+                      <cell id="{3be845f5-44ea-461a-8575-43c5bb839bf6}" locklevel="0" colspan="1" rowspan="1" ordinalvalue="10007" solutionaction="Added">
                         <labels>
                           <label description="TextID_03" languagecode="1033" />
                         </labels>
@@ -316,6 +324,13 @@
           </columns>
         </tab>
       </tabs>
+      <events>
+        <event name="onsave" application="false" active="false" solutionaction="Added">
+          <Handlers>
+            <Handler functionName="Sdk.MainPhone" libraryName="ap_EmailChange" handlerUniqueId="{fbb44e34-0fd5-4e4f-a7d4-93bffc3fb8f5}" enabled="true" parameters="" passExecutionContext="true" ordinalvalue="0" />
+          </Handlers>
+        </event>
+      </events>
       <header id="{d5a03552-1183-4347-a237-1f894ba449eb}" columns="111" celllabelposition="Top" labelwidth="115">
         <rows>
           <row>
@@ -337,6 +352,9 @@
           </row>
         </rows>
       </header>
+      <formLibraries>
+        <Library name="ap_EmailChange" libraryUniqueId="{8a816a69-2d9d-48ce-8f39-1778b8a40849}" solutionaction="Added" />
+      </formLibraries>
       <footer id="{6677b006-704a-420c-b532-e96106633ea2}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left" solutionaction="Added">
         <rows>
           <row>

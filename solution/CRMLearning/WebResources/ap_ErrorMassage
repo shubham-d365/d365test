@@ -1,0 +1,14 @@
+function ErrorInMassage (executionContext){
+  var formContext =executionContext.getFormContext();
+  var phNumber = formContext.getAttribute("mobilephone").getValue();
+  var ms = new RegExp ("^(\([0-9]{3}\)|[0-9]{3}-)[0-9]{3}-[0-9]{4}$");
+        
+         if(!ms.test(phNumber)){
+              formContext.getControl("mobilephone").setNotification("Invalid number dada","telephonemsg");
+              formContext.ui.setFormNotification("Info msg", "INFO","formnoti1");
+            }
+         else {
+             formContext.getControl("mobilephone").clearNotification("telephonemsg");
+             formContext.ui.clearFormNotification("formnoti1");
+           }
+}
