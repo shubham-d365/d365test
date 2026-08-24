@@ -89,10 +89,35 @@ jobs:
             Out-File $env:GITHUB_OUTPUT -Append
 
 
-      - name: Install Power Platform Tools
-        uses: microsoft/powerplatform-actions/actions-install@v1
-        with:
-          add-tools-to-path: true
+      - name: Install Power Platform CLI
+        shell: pwsh
+        run: |
+          $pacVersion = "2.8.1"
+          $installPath = "$env:RUNNER_TEMP\PowerPlatformCLI"
+      
+          New-Item -ItemType Directory -Force -Path $installPath | Out-Null
+      
+          nuget install Microsoft.PowerApps.CLI `
+            -Version $pacVersion `
+            -DependencyVersion Ignore `
+            -NonInteractive `
+            -OutputDirectory $installPath
+      
+          $pacPath = Get-ChildItem `
+            -Path $installPath `
+            -Filter "pac.exe" `
+            -Recurse |
+            Select-Object -First 1 -ExpandProperty FullName
+      
+          if (-not $pacPath) {
+              throw "pac.exe was not found after installation."
+          }
+      
+          $pacDirectory = Split-Path $pacPath
+      
+          Add-Content -Path $env:GITHUB_PATH -Value $pacDirectory
+      
+          Write-Host "PAC installed at: $pacPath"
 
 
       - name: Auth
