@@ -50,7 +50,7 @@ jobs:
               - 'solution/solution3/**'
 
             solution5:
-              - 'solution/solution4/**'
+              - 'solution/CRMLearning/**'
 
             plugin:
               - 'pluginassamblies/**'
