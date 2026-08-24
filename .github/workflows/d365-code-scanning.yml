@@ -18,7 +18,7 @@ jobs:
   # ==========================================================
   detect-changes:
     name: Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     outputs:
       solution1: ${{ steps.filter.outputs.solution1 }}
@@ -73,7 +73,7 @@ jobs:
       needs.detect-changes.outputs.solution4 == 'true' ||
       needs.detect-changes.outputs.solution5 == 'true'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -208,7 +208,7 @@ jobs:
 
     if: needs.detect-changes.outputs.plugin == 'true'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -332,7 +332,7 @@ jobs:
       needs.detect-changes.outputs.solution5 != 'true' &&
       needs.detect-changes.outputs.plugin != 'true'
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
@@ -363,7 +363,7 @@ jobs:
 
     if: always()
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
 
