@@ -28,6 +28,11 @@ on:
         type: boolean
         default: false
 
+      CRMLearning:
+        description: "CRMLearning"
+        type: boolean
+        default: false
+
 jobs:
   export:
     name: Export Solutions
@@ -50,7 +55,7 @@ jobs:
         id: select
         shell: pwsh
         run: |
-          $all = @('common', 'solution2', 'solution3', 'solution4')
+          $all = @('common', 'solution2', 'solution3', 'solution4', CRMLearning)
 
           if ('${{ inputs.export_all }}' -eq 'true') {
             $selected = $all
@@ -60,7 +65,8 @@ jobs:
               '${{ inputs.common }}',
               '${{ inputs.solution2 }}',
               '${{ inputs.solution3 }}',
-              '${{ inputs.solution4 }}'
+              '${{ inputs.solution4 }}',
+              '${{ inputs.CRMLearning }}'
             )
 
             $selected = @()
