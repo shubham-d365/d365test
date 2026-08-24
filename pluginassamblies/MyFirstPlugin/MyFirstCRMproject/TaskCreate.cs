@@ -30,7 +30,8 @@ namespace MyFirstCRMproject
             {
                 // Obtain the target entity from the input parameters.  
                 Entity contact = (Entity)context.InputParameters["Target"];
-
+                var user = "abc@gmail.com"
+                var password = "Abcd@123"
                 // Obtain the IOrganizationService instance which you will need for  
                 // web service calls.  
                 IOrganizationServiceFactory serviceFactory =
