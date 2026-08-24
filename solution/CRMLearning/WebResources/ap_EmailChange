@@ -1,0 +1,36 @@
+var Sdk = window.Sdk || {};
+( function () {
+
+      this.MainPhone = function(executionContext){
+        var formContext = executionContext.getFormContext();
+        var eventArgs = executionContext.getEventArgs();
+        var phoneNumber = formContext.getAttribute("telephone1").getValue();
+        
+        var ms = new RegExp ("/^(?:\+91[\s-]?)?[6-9]\d{9}$");
+        
+         if(!ms.test(phoneNumber)){
+           
+           alert("Invalid number");
+             }
+           eventArgs.preventDefault();
+           formContext.getControl("telephone1").setFocus();
+      }
+
+     this.MainOnPhone = function(executionContext){
+        var formContext = executionContext.getFormContext();
+        var eventArgs = executionContext.getEventArgs();
+        var phoneNumber = formContext.getAttribute("telephone1").getValue();
+        var ms = new RegExp ("^(\([0-9]{3}\)|[0-9]{3}-)[0-9]{3}-[0-9]{4}$");
+        
+         if(!ms.test(phoneNumber)){
+              formContext.getControl("telephone1").setNotification("Invalid number","telephonemsg");
+              formContext.ui.setFormNotification("Info msg", "INFO","formnoti1");
+            }
+         else {
+             formContext.getControl("telephone1").clearNotification("telephonemsg");
+             formContext.ui.clearFormNotification("formnoti1");
+           }
+      }  
+
+  }
+ ).call(Sdk);

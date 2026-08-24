@@ -1,104 +1,98 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <InteractionCentricDashboard xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <LocalizedNames>
-    <LocalizedName description="Accounts Dashboard" languagecode="1033" />
+    <LocalizedName description="Leads Dashboard" languagecode="1033" />
   </LocalizedNames>
-  <Descriptions>
-    <Description description="Shows an overview of data related to accounts." languagecode="1033" />
-  </Descriptions>
-  <FormId>{15915835-b87c-49ec-9ffc-bfac3ac44ef1}</FormId>
+  <FormId>{9a14ebb4-143e-e711-80e1-00155d871bb4}</FormId>
   <IsDefault>0</IsDefault>
   <FormXml>
     <forms type="interactioncentricdashboard">
       <form>
-        <tabs filterby="createdon" timeframe="7" primaryentitylogicalname="account" entityview="{00000000-0000-0000-00AA-000010001002}" dashboardCategory="1_1" tilespresent="false">
-          <tab showlabel="true" verticallayout="true" collapsible="true" id="{24fa8919-d169-4242-81cf-328f4a32377d}">
+        <tabs filterby="createdon" timeframe="7" primaryentitylogicalname="lead" entityview="{5A926B99-3A5F-DF11-AE90-00155D2E3002}" dashboardCategory="1_1" tilespresent="false">
+          <tab showlabel="true" verticallayout="true" collapsible="true" id="{882e84a0-9536-4721-acf5-28ee5dcc1445}">
             <labels>
-              <label description="" languagecode="1033" />
+              <label description="Visual Filters" languagecode="1033" />
             </labels>
             <columns>
               <column width="100%">
                 <sections>
-                  <section name="VisualFilters" showlabel="false" showbar="false" columns="1111" id="{0a032952-edaf-4639-8613-10890822010f}">
+                  <section name="VisualFilters" showlabel="false" showbar="false" columns="111" id="{a0c0ce4a-dff2-439a-8add-976f70fb12b5}">
                     <labels>
-                      <label description="" languagecode="1033" />
+                      <label description="Section" languagecode="1033" />
                     </labels>
                     <rows>
                       <row>
-                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{34e280b1-b19c-429c-8fd5-a348ee9bae12}" auto="false">
+                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{c8fda591-d793-486b-a91d-d629e08c10b4}" auto="false">
                           <labels>
-                            <label description="Accounts" languagecode="1033" />
+                            <label description="Lead" languagecode="1033" />
                           </labels>
-                          <control id="Componentc4e86d7" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}">
+                          <control id="Componentb331101" uniqueid="{e4c6a707-b389-68c1-aba1-2d2041431cd2}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
                             <parameters>
-                              <TargetEntityType>account</TargetEntityType>
-                              <ChartGridMode>Chart</ChartGridMode>
-                              <EnableQuickFind>false</EnableQuickFind>
-                              <EnableViewPicker>false</EnableViewPicker>
-                              <EnableJumpBar>false</EnableJumpBar>
-                              <RecordsPerPage>10</RecordsPerPage>
-                              <ViewId>{00000000-0000-0000-00AA-000010001002}</ViewId>
-                              <IsUserView>false</IsUserView>
-                              <ViewIds />
-                              <AutoExpand>Fixed</AutoExpand>
-                              <VisualizationId>{74A622C0-5193-DE11-97D4-00155DA3B01E}</VisualizationId>
-                              <IsUserChart>false</IsUserChart>
-                              <EnableChartPicker>false</EnableChartPicker>
-                              <RelationshipName />
-                            </parameters>
-                          </control>
-                        </cell>
-                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{8e3a4afb-fe9c-40c0-ab92-7b29e22a3fda}" auto="false">
-                          <labels>
-                            <label description="Accounts" languagecode="1033" />
-                          </labels>
-                          <control id="Component2316e00" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" uniqueid="{e3397c2b-c070-e132-7e95-41859263e0d3}" indicationOfSubgrid="true">
-                            <parameters>
-                              <TargetEntityType>account</TargetEntityType>
+                              <TargetEntityType>lead</TargetEntityType>
                               <ChartGridMode>Chart</ChartGridMode>
                               <EnableQuickFind>false</EnableQuickFind>
                               <EnableViewPicker>false</EnableViewPicker>
                               <EnableJumpBar>false</EnableJumpBar>
                               <RecordsPerPage>10</RecordsPerPage>
                               <HeaderColorCode />
-                              <ViewId>{00000000-0000-0000-00AA-000010001002}</ViewId>
+                              <ViewId>{5A926B99-3A5F-DF11-AE90-00155D2E3002}</ViewId>
                               <IsUserView>false</IsUserView>
                               <ViewIds />
                               <AutoExpand>Fixed</AutoExpand>
-                              <VisualizationId>{A3A9EE47-5093-DE11-97D4-00155DA3B01E}</VisualizationId>
+                              <VisualizationId>{D311600C-163A-E711-80E3-00155D42A416}</VisualizationId>
                               <IsUserChart>false</IsUserChart>
                               <EnableChartPicker>false</EnableChartPicker>
                               <RelationshipName />
                             </parameters>
                           </control>
                         </cell>
-                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{46dcfd3b-a55f-4a31-ac5b-0600e9825760}" auto="false">
+                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{a40c0d0e-851a-49a6-b572-531b8d6129a4}" auto="false">
                           <labels>
-                            <label description="Accounts" languagecode="1033" />
+                            <label description="Lead" languagecode="1033" />
                           </labels>
-                          <control id="Component666c4a4" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}">
+                          <control id="Componentd3ca6ed" uniqueid="{99e786e0-b75c-1488-2e53-0804253a25b5}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
                             <parameters>
-                              <TargetEntityType>account</TargetEntityType>
+                              <TargetEntityType>lead</TargetEntityType>
                               <ChartGridMode>Chart</ChartGridMode>
                               <EnableQuickFind>false</EnableQuickFind>
                               <EnableViewPicker>false</EnableViewPicker>
                               <EnableJumpBar>false</EnableJumpBar>
                               <RecordsPerPage>10</RecordsPerPage>
-                              <ViewId>{00000000-0000-0000-00AA-000010001002}</ViewId>
+                              <HeaderColorCode />
+                              <ViewId>{5A926B99-3A5F-DF11-AE90-00155D2E3002}</ViewId>
                               <IsUserView>false</IsUserView>
                               <ViewIds />
                               <AutoExpand>Fixed</AutoExpand>
-                              <VisualizationId>{5B290FFF-355F-DF11-AE90-00155D2E3002}</VisualizationId>
+                              <VisualizationId>{F5976C58-5693-DE11-97D4-00155DA3B01E}</VisualizationId>
                               <IsUserChart>false</IsUserChart>
                               <EnableChartPicker>false</EnableChartPicker>
                               <RelationshipName />
                             </parameters>
                           </control>
                         </cell>
-                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{134cc0fd-761c-4b6c-8651-a6f65699daf0}" auto="false" ispreviewcell="true">
+                        <cell colspan="1" rowspan="12" showlabel="false" ischartcell="true" id="{85545e97-0104-4f08-a6d5-8beba74d037a}" auto="false">
                           <labels>
-                            <label description="" languagecode="1033" />
+                            <label description="Lead" languagecode="1033" />
                           </labels>
+                          <control id="Componentf835e12" uniqueid="{73bd691d-c3de-edb2-ca38-bec43ded894c}" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                            <parameters>
+                              <TargetEntityType>lead</TargetEntityType>
+                              <ChartGridMode>Chart</ChartGridMode>
+                              <EnableQuickFind>false</EnableQuickFind>
+                              <EnableViewPicker>false</EnableViewPicker>
+                              <EnableJumpBar>false</EnableJumpBar>
+                              <RecordsPerPage>10</RecordsPerPage>
+                              <HeaderColorCode />
+                              <ViewId>{5A926B99-3A5F-DF11-AE90-00155D2E3002}</ViewId>
+                              <IsUserView>false</IsUserView>
+                              <ViewIds />
+                              <AutoExpand>Fixed</AutoExpand>
+                              <VisualizationId>{B92A5119-193A-E711-80E3-00155D42A416}</VisualizationId>
+                              <IsUserChart>false</IsUserChart>
+                              <EnableChartPicker>false</EnableChartPicker>
+                              <RelationshipName />
+                            </parameters>
+                          </control>
                         </cell>
                       </row>
                       <row />
@@ -118,42 +112,42 @@
               </column>
             </columns>
           </tab>
-          <tab name="StreamsContainer" showlabel="true" verticallayout="true" collapsible="false" id="{04777963-a981-4d85-bb77-948111df0bdf}">
+          <tab name="StreamsContainer" showlabel="true" verticallayout="true" collapsible="false" id="{e8dffa9b-19ad-4b5d-bbbb-18d97eecc878}">
             <labels>
-              <label description="" languagecode="1033" />
+              <label description="Streams" languagecode="1033" />
             </labels>
             <columns>
               <column width="100%">
                 <sections>
-                  <section name="Streams" showlabel="false" showbar="false" columns="1111" id="{98a04539-b529-4c9a-bf6d-d7ea5f171302}">
+                  <section name="Streams" showlabel="false" showbar="false" columns="1111" id="{c6dae392-5c89-4418-be87-faa9006a8c5c}">
                     <labels>
-                      <label description="" languagecode="1033" />
+                      <label description="Section" languagecode="1033" />
                     </labels>
                     <rows>
                       <row>
-                        <cell colspan="4" rowspan="12" showlabel="false" isstreamcell="true" id="{0c1ce1d7-749f-4fcc-86cb-9f10d78ea056}">
+                        <cell colspan="4" rowspan="12" showlabel="false" isstreamcell="true" id="{374ee018-b6c4-4749-9aa9-85c001795cd5}">
                           <labels>
                             <label description="" languagecode="1033" />
                           </labels>
-                          <control id="Component{c25c1ba2-33b6-0760-d1cc-7621224bdaa7}" classid="{EE9078C8-6946-4E2C-B8F8-35E65F4BE6A8}">
+                          <control id="Component{71203de0-1572-9d25-7be5-7d25e0d0981d}" classid="{EE9078C8-6946-4E2C-B8F8-35E65F4BE6A8}">
                             <parameters>
                               <StreamObjects>
                                 <ShowAsTiles>false</ShowAsTiles>
-                                <StreamObject type="1" id="{f4e583f5-7e73-43eb-8793-276b20ff1b27}">
-                                  <LogicalEntityName>account</LogicalEntityName>
-                                  <EntityViewId>{00000000-0000-0000-00AA-000010001001}</EntityViewId>
+                                <StreamObject id="{e160e32c-e188-713e-2205-c518e555ea71}" type="1">
+                                  <LogicalEntityName>lead</LogicalEntityName>
+                                  <EntityViewId>{00000000-0000-0000-00AA-000010001005}</EntityViewId>
                                 </StreamObject>
-                                <StreamObject type="1" id="{1974731d-f185-4bc4-b6dd-37a6fcb8e847}">
-                                  <LogicalEntityName>account</LogicalEntityName>
-                                  <EntityViewId>{00000000-0000-0000-00AA-000010001002}</EntityViewId>
+                                <StreamObject id="{6ed9303a-9a88-26bd-3418-426e0d520e75}" type="1">
+                                  <LogicalEntityName>lead</LogicalEntityName>
+                                  <EntityViewId>{00000000-0000-0000-00AA-000010001006}</EntityViewId>
                                 </StreamObject>
-                                <StreamObject type="1" id="{81CFD7EA-7DBD-451F-A2BA-60E61EB50E29}">
-                                  <LogicalEntityName>account</LogicalEntityName>
-                                  <EntityViewId>{00000000-0000-0000-00AA-000010001031}</EntityViewId>
+                                <StreamObject id="{c24409c1-7b5a-64b9-44d5-a9b660c4d657}" type="1">
+                                  <LogicalEntityName>lead</LogicalEntityName>
+                                  <EntityViewId>{00000000-0000-0000-00AA-000010001009}</EntityViewId>
                                 </StreamObject>
-                                <StreamObject type="1" id="{AF63BE3B-FBAA-44D4-AF06-7B52EF6C7F8E}">
-                                  <LogicalEntityName>account</LogicalEntityName>
-                                  <EntityViewId>{65FFAF9A-E8C5-432D-860B-32F841B00D87}</EntityViewId>
+                                <StreamObject id="{335bb01d-e324-11ca-5240-c122e8664316}" type="1">
+                                  <LogicalEntityName>lead</LogicalEntityName>
+                                  <EntityViewId>{5A926B99-3A5F-DF11-AE90-00155D2E3002}</EntityViewId>
                                 </StreamObject>
                               </StreamObjects>
                             </parameters>
@@ -181,6 +175,6 @@
       </form>
     </forms>
   </FormXml>
-  <IntroducedVersion>8.0.0.0</IntroducedVersion>
+  <IntroducedVersion>1.0</IntroducedVersion>
   <IsTabletEnabled>0</IsTabletEnabled>
 </InteractionCentricDashboard>
